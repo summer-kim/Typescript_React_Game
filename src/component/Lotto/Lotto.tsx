@@ -1,16 +1,11 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  useCallback,
-} from 'react';
+import * as React from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import Ball from './Ball';
 
 const getLottoNumbers = () => {
-  const shuffle = [];
+  const shuffle: number[] = [];
   const candidate = Array(45)
-    .fill()
+    .fill(null)
     .map((v, i) => i + 1);
 
   while (shuffle.length < 6) {
@@ -24,10 +19,10 @@ const getLottoNumbers = () => {
 };
 
 const Lotto = () => {
-  const timeoutArray = useRef([]);
+  const timeoutArray = useRef<number[]>([]);
   const pickNumbers = useMemo(() => getLottoNumbers(), [timeoutArray.current]);
   const [numbers, setNumbers] = useState(pickNumbers);
-  const [balls, setBalls] = useState([]);
+  const [balls, setBalls] = useState<number[]>([]);
   const [startable, setStartable] = useState(true);
   const [resetable, setResetable] = useState(false);
   const [run, setRun] = useState(false);
@@ -36,7 +31,7 @@ const Lotto = () => {
   useEffect(() => {
     if (run) {
       for (let i = 0; i < numbers.length; i++) {
-        timeoutArray.current[i] = setTimeout(() => {
+        timeoutArray.current[i] = window.setTimeout(() => {
           setBalls((preBalls) => [...preBalls, numbers[i]]);
           if (i === numbers.length - 1) setResetable(true);
         }, (i + 1) * 1000);
@@ -63,8 +58,9 @@ const Lotto = () => {
   }, [pickNumbers]);
 
   const onClick = useCallback(
-    () => (e) => {
-      if (e.target.id === 'start') {
+    () => (e: React.MouseEvent<HTMLButtonElement>) => {
+      const target = e.target as HTMLButtonElement;
+      if (target.id === 'start') {
         setRun(true);
         setStartable(false);
       } else {

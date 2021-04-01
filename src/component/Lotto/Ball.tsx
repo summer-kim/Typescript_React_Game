@@ -1,6 +1,7 @@
-import React, { memo } from 'react';
+import * as React from 'react';
+import { memo } from 'react';
 
-const colorChart = (num) => {
+const colorChart = (num: number) => {
   let background = '';
   if (num <= 10) background = 'red';
   else if (num <= 20) background = 'orange';
@@ -12,7 +13,10 @@ const colorChart = (num) => {
   return background;
 };
 
-const Ball = ({ num }) => {
+interface Props {
+  num: number;
+}
+const Ball: React.FC<Props> = ({ num }) => {
   const background = colorChart(num);
   return (
     <div
