@@ -1,28 +1,33 @@
-import React, { Fragment, useState, useEffect, useRef } from 'react';
+import * as React from 'react';
+import { Fragment, useState, useEffect, useRef } from 'react';
 
 const RSPcoord = {
   Rock: '0',
   Scissors: '-170px',
   Paper: '-345px',
-};
+} as const;
 
 const scoreTable = {
   Rock: 0,
   Scissors: 1,
   Paper: -1,
-};
+} as const;
 
-const computerSelect = (position) => {
-  return Object.entries(RSPcoord).find((each) => each[1] === position)[0];
+type PositionKey = keyof typeof RSPcoord;
+type Position = typeof RSPcoord[keyof typeof RSPcoord];
+const computerSelect = (position: Position): PositionKey => {
+  return (Object.keys(RSPcoord) as PositionKey[]).find(
+    (each) => RSPcoord[each] === position
+  )!;
 };
 
 const RockScissorPaper = () => {
-  const interval = useRef();
+  const interval = useRef<number>();
   const [result, setResult] = useState('');
-  const [imgCoord, setImgCoord] = useState(0);
+  const [imgCoord, setImgCoord] = useState<Position>(RSPcoord.Rock);
 
   useEffect(() => {
-    interval.current = setInterval(switchRSP, 100);
+    interval.current = window.setInterval(switchRSP, 100);
     return () => {
       clearInterval(interval.current);
     };
@@ -38,12 +43,13 @@ const RockScissorPaper = () => {
     }
   };
 
-  const onClickStop = (e) => {
-    const mySelect = e.target.textContent;
+  const onClickStop = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const target = e.target as HTMLButtonElement;
+    const mySelect = target.innerHTML as PositionKey;
     const computer = computerSelect(imgCoord);
     clearInterval(interval.current);
     setTimeout(() => {
-      interval.current = setInterval(switchRSP, 100);
+      interval.current = window.setInterval(switchRSP, 100);
     }, 1200);
     if (scoreTable[computer] === scoreTable[mySelect]) {
       setResult('Draw');
