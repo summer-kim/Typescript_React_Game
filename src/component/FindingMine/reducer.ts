@@ -1,9 +1,13 @@
-import { plantMine } from './MineSearch';
-import { TABLE_CODE, ACTION_TYPE } from './code';
+import { plantMine, ReducerState, initialState } from './MineSearch';
+import { TABLE_CODE, ACTION_TYPE, ReducerAction } from './code';
 
-const reducer = (state, action) => {
-  const { row = '', col = '' } = action;
-  let rowArray = [];
+const reducer = (
+  state = initialState,
+  action: ReducerAction
+): ReducerState | undefined => {
+  let row: number, col: number;
+  let rowArray: number[] = [];
+
   switch (action.type) {
     case ACTION_TYPE.START_GAME:
       return {
@@ -18,16 +22,18 @@ const reducer = (state, action) => {
       };
     case ACTION_TYPE.OPEN_CELL: {
       const tableData = [...state.tableData];
-      const mineList = [
+      const mineList: number[] = [
         TABLE_CODE.MINE,
         TABLE_CODE.QUESTION_MINE,
         TABLE_CODE.FLAG_MINE,
       ];
-      const recursiveLog = [];
+      const recursiveLog: string[] = [];
       console.log('get opendCount state:' + state.opendNum);
       let opendNum = 0;
+      row = action.row;
+      col = action.col;
 
-      const checkMines = (rowCurr, colCurr) => {
+      const checkMines = (rowCurr: number, colCurr: number) => {
         if (mineList.includes(tableData[rowCurr][colCurr])) {
           return;
         }
@@ -78,6 +84,8 @@ const reducer = (state, action) => {
       };
     }
     case ACTION_TYPE.BLOW_UP:
+      row = action.row;
+      col = action.col;
       rowArray = [...state.tableData[row]];
       rowArray[col] = TABLE_CODE.EXPLOSION;
       return {
@@ -89,6 +97,8 @@ const reducer = (state, action) => {
         ),
       };
     case ACTION_TYPE.TO_QUESTION:
+      row = action.row;
+      col = action.col;
       rowArray = [...state.tableData[row]];
       rowArray[col] === TABLE_CODE.MINE
         ? (rowArray[col] = TABLE_CODE.QUESTION_MINE)
@@ -100,6 +110,8 @@ const reducer = (state, action) => {
         ),
       };
     case ACTION_TYPE.TO_FLAG:
+      row = action.row;
+      col = action.col;
       rowArray = [...state.tableData[row]];
       rowArray[col] === TABLE_CODE.QUESTION_MINE
         ? (rowArray[col] = TABLE_CODE.FLAG_MINE)
@@ -111,6 +123,8 @@ const reducer = (state, action) => {
         ),
       };
     case ACTION_TYPE.TO_NORMAL:
+      row = action.row;
+      col = action.col;
       rowArray = [...state.tableData[row]];
       rowArray[col] === TABLE_CODE.FLAG_MINE
         ? (rowArray[col] = TABLE_CODE.MINE)
