@@ -1,0 +1,19 @@
+export const TABLE_CODE = {
+  MINE: -7,
+  NORMAL: -1,
+  QUESTION: -2,
+  FLAG: -3,
+  QUESTION_MINE: -4,
+  FLAG_MINE: -5,
+  EXPLOSION: -6,
+  OPEND: 0,
+};
+
+export const ACTION_TYPE = {
+  START_GAME: 'START_GAME',
+  OPEN_CELL: 'OPEN_CELL',
+  TO_FLAG: 'TO_FLAG',
+  TO_NORMAL: 'TO_NORMAL',
+  TO_QUESTION: 'TO_QUESTION',
+  BLOW_UP: 'BLOW_UP',
+};
