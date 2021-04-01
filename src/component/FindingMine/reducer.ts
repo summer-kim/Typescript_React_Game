@@ -1,10 +1,7 @@
 import { plantMine, ReducerState, initialState } from './MineSearch';
 import { TABLE_CODE, ACTION_TYPE, ReducerAction } from './code';
 
-const reducer = (
-  state = initialState,
-  action: ReducerAction
-): ReducerState | undefined => {
+const reducer = (state = initialState, action: ReducerAction): ReducerState => {
   let row: number, col: number;
   let rowArray: number[] = [];
 
@@ -136,7 +133,7 @@ const reducer = (
         ),
       };
     default:
-      break;
+      return state;
   }
 };
 
