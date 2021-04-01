@@ -1,13 +1,14 @@
-import React, { Fragment, useState, useRef } from 'react';
+import * as React from 'react';
+import { Fragment, useState, useRef } from 'react';
 
 const SpeedMeasure = () => {
   const [status, setStatus] = useState('wait');
   const [message, setMessage] = useState('Click to Start');
-  const [records, setRecords] = useState([]);
+  const [records, setRecords] = useState<number[]>([]);
   const [result, setResult] = useState('');
-  const setTimer = useRef(null);
-  const startTime = useRef(null);
-  const endTime = useRef(null);
+  const setTimer = useRef<number>(0);
+  const startTime = useRef<number>(0);
+  const endTime = useRef<number>(0);
 
   const onClick = () => {
     switch (status) {
@@ -15,7 +16,7 @@ const SpeedMeasure = () => {
         setStatus('ready');
         setMessage('Click Box when color turns to Blue');
         setResult('');
-        setTimer.current = setTimeout(() => {
+        setTimer.current = window.setTimeout(() => {
           startTime.current = Date.now();
           setStatus('now');
           setMessage('Click Now');
@@ -42,7 +43,8 @@ const SpeedMeasure = () => {
     }
   };
   const showAverage = () => {
-    let sum, average;
+    let sum: number,
+      average: number = 0;
     if (records) {
       sum = records.reduce((acc, curr) => acc + curr, 0);
       average = sum / records.length;
