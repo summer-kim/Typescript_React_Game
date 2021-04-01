@@ -1,33 +1,27 @@
-import React, { useCallback, memo } from 'react';
-import {
-  faQuestion,
-  faExclamation,
-  faBomb,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { TABLE_CODE, ACTION_TYPE } from './code';
-import '../../asset/findingMine.css';
+import * as React from 'react';
+import { useCallback, memo } from 'react';
+import { TABLE_CODE, ACTION_TYPE, ReducerAction } from './code';
 
-const getTdText = (code) => {
+const getTdText = (code: number) => {
   switch (code) {
     case TABLE_CODE.MINE:
       return ' ';
     case TABLE_CODE.EXPLOSION:
-      return <FontAwesomeIcon icon={faBomb} />;
+      return 'X';
     case TABLE_CODE.NORMAL:
       return ' ';
     case TABLE_CODE.QUESTION_MINE:
     case TABLE_CODE.QUESTION:
-      return <FontAwesomeIcon icon={faQuestion} />;
+      return '?';
     case TABLE_CODE.FLAG_MINE:
     case TABLE_CODE.FLAG:
-      return <FontAwesomeIcon icon={faExclamation} />;
+      return '!';
     default:
       return code || ' ';
   }
 };
 
-const getTdStyle = (code) => {
+const getTdStyle = (code: number) => {
   switch (code) {
     case TABLE_CODE.NORMAL:
     case TABLE_CODE.MINE:
@@ -47,7 +41,21 @@ const getTdStyle = (code) => {
   }
 };
 
-const Td = ({ rowIndex, colIndex, code, dispatch, halted }) => {
+interface Props {
+  rowIndex: number;
+  colIndex: number;
+  code: number;
+  dispatch: React.Dispatch<ReducerAction>;
+  halted: boolean;
+}
+
+const Td: React.FC<Props> = ({
+  rowIndex,
+  colIndex,
+  code,
+  dispatch,
+  halted,
+}) => {
   const onClickDigging = useCallback(() => {
     if (halted) {
       return;

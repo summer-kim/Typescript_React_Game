@@ -1,4 +1,6 @@
-import React, { useContext, memo } from 'react';
+import * as React from 'react';
+import { useContext, memo } from 'react';
+
 import Tr from './Tr';
 import { TableContext } from './MineSearch';
 
@@ -8,7 +10,7 @@ const Table = () => {
     <table className='m-1 ms-2'>
       <tbody id='tableTbody'>
         {Array(tableData.length)
-          .fill()
+          .fill(null)
           .map((tr, index) => (
             <Tr rowIndex={index} key={index} />
           ))}

@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useContext } from 'react';
+import * as React from 'react';
+import { useState, useCallback, useContext } from 'react';
 import { TableContext } from './MineSearch';
 import { ACTION_TYPE } from './code';
 

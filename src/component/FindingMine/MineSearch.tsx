@@ -1,10 +1,20 @@
-import React, { useReducer, createContext, useMemo } from 'react';
+import * as React from 'react';
+import { useReducer, createContext, useMemo } from 'react';
 import reducer from './reducer';
-import { TABLE_CODE } from './code';
+import { TABLE_CODE, ReducerAction } from './code';
 import Form from './Form';
 import Table from './Table';
+//import './findingMine.css';
 
-export const TableContext = createContext({
+interface Context {
+  tableData: number[][];
+  dispatch: React.Dispatch<ReducerAction>;
+  halted: boolean;
+  result: string;
+  opendNum: number;
+}
+
+export const TableContext = createContext<Context>({
   tableData: [],
   dispatch: () => {},
   halted: false,
@@ -12,18 +22,30 @@ export const TableContext = createContext({
   opendNum: 0,
 });
 
-const initialState = {
+export interface ReducerState {
+  opendNum: number;
+  tableData: number[][];
+  result: string;
+  halted: boolean;
+  dispatch?: () => {};
+}
+
+export const initialState: ReducerState = {
   opendNum: 0,
   tableData: [],
   result: 'Win',
   halted: false,
 };
-
-export const plantMine = ({ rows, cols, mines }) => {
-  const data = [];
+interface plantMineType {
+  rows: number;
+  cols: number;
+  mines: number;
+}
+export const plantMine = ({ rows, cols, mines }: plantMineType) => {
+  const data: number[][] = [];
   const shuffle = [];
   const candidate = Array(rows * cols)
-    .fill()
+    .fill(null)
     .map((v, idx) => idx);
   while (shuffle.length < mines) {
     const randomNum = Math.floor(Math.random() * candidate.length);
@@ -48,7 +70,7 @@ export const plantMine = ({ rows, cols, mines }) => {
 
 const MineSearch = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { tableData, halted, result, opendNum } = state;
+  const { tableData, halted, result, opendNum } = state!;
   const contextValue = useMemo(
     () => ({ tableData, dispatch, halted, result, opendNum }),
     [tableData, halted, opendNum]
