@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
-import Gugudan from './component/Gugudan';
+import Gugudan from './component/Gugudan/Gugudan';
 
 const Games = () => {
   return (
